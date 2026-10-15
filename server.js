@@ -1,7 +1,10 @@
-const express = require("express")
-const app = express()
+require("dotenv").config()
 
+const express = require("express")
+const connectDB = require("./config/db")
+const app = express()
 const PORT = process.env.PORT || 8080
+
 
 app.use(express.json())
 
@@ -12,6 +15,14 @@ app.get('/health', (request, response) => {
     })
 })
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+
+const startServer = async () => {
+    await connectDB()
+
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`)
+    })
+    
+}
+
+startServer()
