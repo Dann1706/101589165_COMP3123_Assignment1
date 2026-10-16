@@ -14,6 +14,9 @@ app.use(express.json())
 const userRoutes = require("./routes/userRoutes")
 app.use("/api/v1/user", userRoutes)
 
+const employeeRoutes = require("./routes/employeeRoutes")
+app.use("/api/v1/emp", employeeRoutes)
+
 
 app.get('/health', (request, response) => {
     response.status(200).json({
