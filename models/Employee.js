@@ -45,3 +45,6 @@ const employeeSchema = new mongoose.Schema({
         updatedAt: "updated_at"
     }
 })
+
+module.exports = mongoose.model("Employee", employeeSchema)
+
