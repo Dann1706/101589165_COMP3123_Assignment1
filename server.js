@@ -64,6 +64,13 @@ const startServer = async () => {
     
 }
 
+// Handle unsupported routes
+app.use((req, res) => {
+    res.status(404).json({
+        message: "Route not found"
+    })
+})
+
 app.use(errorHandler)
 
 startServer()
