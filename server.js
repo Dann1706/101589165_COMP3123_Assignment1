@@ -7,8 +7,35 @@ const connectDB = require("./config/db")
 const app = express()
 const PORT = process.env.PORT || 8080
 
+const helmet = require("helmet")
+const rateLimit = require("express-rate-limit")
+const errorHandler = require("./middleware/errorMiddleware")
+const morgan = require("morgan")
+const logger = require("./config/logger")
+
+app.use(helmet())
+
+const apiLimiter = rateLimit({
+    windowMs : 15 * 60 * 1000,
+    limit : 100,
+    standardHeaders : "draft-7",
+    legacyHeaders : false,
+    message : {
+        message : 
+            "Too many requests. Please try again later"
+    }
+})
+
+app.use("/api/v1", apiLimiter)
+
 
 app.use(express.json())
+
+app.use(morgan("combined", {
+    stream: {
+        write: (message) => logger.info(message.trim())
+    }
+}))
 
 
 const userRoutes = require("./routes/userRoutes")
@@ -36,5 +63,7 @@ const startServer = async () => {
     })
     
 }
+
+app.use(errorHandler)
 
 startServer()
